@@ -1,7 +1,7 @@
 'use client'
 import { useRef, useState, JSX } from 'react';
 import { Text, Image, SimpleGrid, Button } from '@mantine/core';
-import { Dropzone, FileWithPath, MIME_TYPES } from '@mantine/dropzone';
+import { Dropzone, FileWithPath } from '@mantine/dropzone';
 
 interface FilePreview {
     key: string;
@@ -24,10 +24,10 @@ function UploadPage( {setExtract, setBase64Image}: UploadPageProps ) {
         setFiles(acceptedFiles);
 
         // Create previews and base64 conversions, I only care abt the first file for now
-        if (acceptedFiles) {
-            for (const file of acceptedFiles) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
+        const file = acceptedFiles[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
                 const base64String = reader.result as string;
                 setBase64Image(base64String);
                 const preview: FilePreview = {
@@ -37,7 +37,6 @@ function UploadPage( {setExtract, setBase64Image}: UploadPageProps ) {
                     className: "max-h-48 max-w-48 m-2",
                 };
                 setPreviews([
-                    ...previews,
                     <Image
                         key={preview.key}
                         src={preview.src}
@@ -47,21 +46,12 @@ function UploadPage( {setExtract, setBase64Image}: UploadPageProps ) {
                 ]);
             };
             reader.readAsDataURL(file); // Convert to base64
-            console.log("Done converting: ", new Date());
-            }
         }
     };
 
     return (
-        <div className='flex flex-col items-center'>
-            <Dropzone
-                openRef={openRef}
-                onDrop={handleDrop}
-                accept={[
-                    MIME_TYPES.png,
-                    MIME_TYPES.jpeg,
-                ]}
-            >
+        <>
+            <Dropzone openRef={openRef} onDrop={handleDrop}>
                 <div className="flex justify-center bg-blue-500 bg-opacity-10 rounded-lg p-4 py-10 m-4 mx-40">Drag Image here or click to select</div>
             </Dropzone>
 
@@ -69,8 +59,8 @@ function UploadPage( {setExtract, setBase64Image}: UploadPageProps ) {
                 <Button onClick={() => openRef.current?.()}>Select File</Button>
             </div>
 
-            <SimpleGrid cols={{ base: 1, sm: 4 }} mt={previews.length > 0 ? 'xl' : 0} className='justify-center'>
-                {previews.map((preview) => (preview))}
+            <SimpleGrid cols={{ base: 1, sm: 4 }} mt={previews.length > 0 ? 'xl' : 0}>
+                {previews}
             </SimpleGrid>
 
             <div className="flex justify-center m-4">
@@ -78,7 +68,7 @@ function UploadPage( {setExtract, setBase64Image}: UploadPageProps ) {
                     setExtract(true);
                 }}>Extract Text</Button>
             </div>
-        </div>
+        </>
     );
 };
 
