@@ -9,6 +9,7 @@ import { ReactNode } from "react";
 import { FontRounded } from "@/lib/fonts";
 import { AppProvider } from "@/components/providers/AppProvider";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { ImageProvider } from "@/components/editor/ImageContext";
 
 export const metadata: Metadata = {
     title: "Scribble Script",
@@ -28,9 +29,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 }
             </head>
             <body className={FontRounded.className}>
-                <AppProvider fontFamily={FontRounded.style.fontFamily}>
-                    {children}
-                </AppProvider>
+                <ImageProvider>
+                    <AppProvider fontFamily={FontRounded.style.fontFamily}>
+                        {children}
+                    </AppProvider>
+                </ImageProvider>
+
             </body>
         </html>
     );

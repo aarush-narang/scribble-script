@@ -58,6 +58,7 @@ const CodeMirrorEditor = memo(({ base64Image, onChange }: CodeMirrorEditorProps)
     })
     .then((res) => res.json())
     .then((data) => {
+        // console.log("End img process: ", new Date());
         console.log('Response from server:', data);
         setInitialCode(data['result']);
     })
@@ -67,7 +68,9 @@ const CodeMirrorEditor = memo(({ base64Image, onChange }: CodeMirrorEditorProps)
   // call automatically right on mount (similar to .onAppear)
   useEffect(() => {
     if (base64Image && base64Image !== prevBase64ImageRef.current) {
+      // console.log("Start img process: ", new Date());
       sendPostRequest();
+      
       prevBase64ImageRef.current = base64Image; // Update the reference
     }
   }, [base64Image]);

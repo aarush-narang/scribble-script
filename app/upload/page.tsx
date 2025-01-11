@@ -46,6 +46,7 @@ function UploadPage( {setExtract, setBase64Image}: UploadPageProps ) {
                 ]);
             };
             reader.readAsDataURL(file); // Convert to base64
+            console.log("Done converting: ", new Date());
         }
     };
 

@@ -3,13 +3,14 @@ import { Button, useMantineColorScheme } from "@mantine/core";
 import UploadPage from "./upload/page";
 import { useState } from "react";
 import CodeMirrorEditor from "@/components/editor/CodeMirrorEditor";
+import { useImage } from "@/components/editor/ImageContext";
 
 
 export default function Home() {
   const colorScheme = useMantineColorScheme();
 
   const [initialCode, setInitialCode] = useState<string>("// Write your code here...");
-  const [base64Image, setBase64Image] = useState<string>("");
+  const {base64Image, setBase64Image} = useImage();
   const [extract, setExtract] = useState<boolean>(false);
 
   return (

@@ -70,12 +70,12 @@ def detect_objects(image, task, text_input=None):
     task_prompt = f"<{task.upper()}>"
     results = run_example(task_prompt, image, text_input)
 
-    draw = ImageDraw.Draw(image)
-    # Load a font
-    try:
-        font = ImageFont.truetype(font="arial.ttf", size=100)
-    except IOError:
-        font = ImageFont.load_default(size=50)
+    # draw = ImageDraw.Draw(image)
+    # # Load a font
+    # try:
+    #     font = ImageFont.truetype(font="arial.ttf", size=100)
+    # except IOError:
+    #     font = ImageFont.load_default(size=50)
 
     if task == "ocr":
         return image, results[f"<{task.upper()}>"]

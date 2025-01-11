@@ -8,6 +8,7 @@ start the server alongside pnpm dev:
 python3 lib/api/server.py
 '''
 import io
+import os
 import re
 import base64
 from flask import Flask, request, jsonify
@@ -16,10 +17,14 @@ from flask_cors import CORS
 from PIL import Image
 from imageprocess import detect_objects
 
+# PERFORMANCE TESTING
+from datetime import datetime
 
 app = Flask(__name__)
 # I'm using CORS here cuz flask is on port 5000 whereas app is on 3000 
 CORS(app)
+
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 @app.route("/process", methods=['POST'])
 def process():
@@ -34,9 +39,9 @@ def process():
 
         image_bytes = base64.b64decode(image_data)
         image = Image.open(io.BytesIO(image_bytes))
-
-
+        # print("unwrapped b64, ready: ", datetime.now().strftime("%H:%M:%S"))
         output_image, result = detect_objects(image, "ocr", None)
+        # print("ouput returned: ", datetime.now().time().strftime("%H:%M:%S"))
         return jsonify({"result": result})
     except Exception as e:
         return jsonify({"error": f"Error processing file: {e}"}), 500
