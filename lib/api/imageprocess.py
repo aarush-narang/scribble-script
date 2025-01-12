@@ -6,8 +6,9 @@ from transformers.dynamic_module_utils import get_imports
 import random
 import numpy as np
 import copy
+from typing import Union
 
-def fixed_get_imports(filename: str | os.PathLike) -> list[str]:
+def fixed_get_imports(filename: Union[str, os.PathLike]) -> list[str]:
     if not str(filename).endswith("modeling_florence2.py"):
         return get_imports(filename)
     imports = get_imports(filename)
