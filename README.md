@@ -1,3 +1,11 @@
+Web: TypeScript, NextJS, MantineUI, Tailwind, Anthropic/Claude, Python, EC2, Docker, Microsoft Florence2-Large ML Model
+iOS: SwiftUI, PencilKit, SwiftAnthropic
+
+iPad Scribble Script Lite repo: https://github.com/kelvinjou/iPadScribbleScript
+
+Built by Aarush Narang, Kelvin Jou, Don Tran, Bailey Say
+─────────────────────────────────────────────────────────
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
