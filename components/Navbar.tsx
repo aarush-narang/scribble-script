@@ -27,6 +27,14 @@ export function Navbar() {
                     >
                         GitHub
                     </Link>
+                    <Link
+                        href="https://github.com/kelvinjou/iPadScribbleScript"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline"
+                    >
+                        GitHub - Mobile App
+                    </Link>
                 </Group>
                 <div />
             </div>
