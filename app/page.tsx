@@ -105,6 +105,7 @@ export default function Home() {
                                     value={inputFile}
                                     onChange={(file) => setInputFile(file)}
                                     disabled={compiling || correcting || correctedCode !== "" || !code}
+                                    size="md"
                                 />
                             </Tooltip>
                         </Group>
