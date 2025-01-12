@@ -1,7 +1,7 @@
 'use client';
 
 import {
-    Button, Tooltip, useMantineColorScheme,
+    Button, FileInput, Group, Tooltip, useMantineColorScheme,
 } from "@mantine/core";
 import UploadPage from "@/components/upload/UploadPage";
 import { useState, useEffect } from "react";
@@ -14,10 +14,21 @@ import { correctCode } from "@/lib/anthropic/api";
 import { DiffView } from "@/components/editor/DiffView";
 
 export default function Home() {
-    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const {
-        code, setCode, correctedCode, isExtracted, setIsExtracted, setCompilationResult, language, compilationResult, setCorrectedCode,
+        code,
+        setCode,
+        correctedCode,
+        isExtracted,
+        setIsExtracted,
+        setCompilationResult,
+        language,
+        compilationResult,
+        setCorrectedCode,
+        codeInputText,
+        setCodeInputText,
     } = useData();
+
+    const [inputFile, setInputFile] = useState<File | null>(null);
 
     const [showAnthropic, setShowAnthropic] = useState<boolean>(false);
     const [compiling, setCompiling] = useState<boolean>(false);
@@ -29,12 +40,22 @@ export default function Home() {
         }
     }, [code]);
 
-    // Ensure the color scheme is set to 'light' by default
     useEffect(() => {
-        if (!colorScheme) {
-            toggleColorScheme();
+        // read the text file into a string -> setCodeInput
+        if (inputFile) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const text = e.target?.result as string;
+                setCodeInputText(text);
+            };
+
+            reader.onerror = (e) => {
+                console.error("File reading error: ", e);
+            };
+
+            reader.readAsText(inputFile);
         }
-    }, [colorScheme, toggleColorScheme]);
+    }, [inputFile]);
 
     const handleCompile = async () => {
         setCompiling(true);
@@ -45,7 +66,7 @@ export default function Home() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                code, language, input: "123", expected: "123",
+                code, language, input: codeInputText,
             }),
         })
             .then((response) => response.json())
@@ -74,8 +95,21 @@ export default function Home() {
                 </div>
                 {isExtracted && (
                     <div className="flex flex-col">
-                        <CodeEditor disabled={compiling || correcting || correctedCode !== ""} />
-                        <div className="grid grid-cols-2 mt-2" style={{ gap: 8 }}>
+                        <Group gap={8}>
+                            <CodeEditor disabled={compiling || correcting || correctedCode !== ""} />
+                            <Tooltip label="If your program requires input from the standard input, you can upload a file containing the input here" position="top">
+                                <FileInput
+                                    accept=".txt"
+                                    className="w-full"
+                                    placeholder="Upload an input file (optional)"
+                                    value={inputFile}
+                                    onChange={(file) => setInputFile(file)}
+                                    disabled={compiling || correcting || correctedCode !== "" || !code}
+                                />
+                            </Tooltip>
+                        </Group>
+
+                        <div className="grid grid-cols-2 mt-3" style={{ gap: 8 }}>
                             <Tooltip label={language ? `Correcting in ${convertedLang}` : "Select a language"} position="top">
                                 <Button
                                     color="violet"
@@ -95,6 +129,8 @@ export default function Home() {
                                     disabled={!language || correcting || correctedCode !== ""}
                                 >
                                     Compile
+                                    {" "}
+                                    {codeInputText ? "With Input" : ""}
                                 </Button>
                             </Tooltip>
                         </div>

@@ -94,7 +94,7 @@ function UploadPage({ disabled }: Props) {
             },
             body: JSON.stringify({
                 image: base64Image,
-                // dev_env: true,
+                dev_env: true,
             }),
         })
             .then((res) => res.json())

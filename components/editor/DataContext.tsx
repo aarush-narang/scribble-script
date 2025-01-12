@@ -11,6 +11,8 @@ interface ImageContextProps {
     setBase64Image: (image: string) => void;
     code: string;
     setCode: (code: string) => void;
+    codeInputText: string;
+    setCodeInputText: (code: string) => void;
     language: string | null;
     setLanguage: (language: string | null) => void;
     correctedCode: string;
@@ -26,6 +28,7 @@ const ImageContext = createContext<ImageContextProps | null>(null);
 export function DataProvider({ children }: { children: ReactNode }) {
     const [base64Image, setBase64Image] = useState<string>('');
     const [code, setCode] = useState('');
+    const [codeInputText, setCodeInputText] = useState('');
     const [correctedCode, setCorrectedCode] = useState('');
     const [isExtracted, setIsExtracted] = useState<boolean>(false);
     const [compilationResult, setCompilationResult] = useState<CompilationResult | null>(null);
@@ -36,6 +39,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         setBase64Image,
         code,
         setCode,
+        codeInputText,
+        setCodeInputText,
         language,
         setLanguage,
         correctedCode,
@@ -49,6 +54,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         setBase64Image,
         code,
         setCode,
+        codeInputText,
+        setCodeInputText,
         language,
         setLanguage,
         correctedCode,
