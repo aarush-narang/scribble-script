@@ -1,12 +1,16 @@
+'use client';
+
 // components/CodeMirrorEditor.js
 import Editor from "react-simple-code-editor";
 // @ts-expect-error types not up to date
 import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/themes/prism-tomorrow.css';
+
 import { Select } from "@mantine/core";
 import { useData } from "./DataContext";
+
 import 'prismjs/components/prism-clike';
-import 'prismjs/components/prism-cpp';
-import 'prismjs/themes/prism.css'; // Example style, you can use another
+import 'prismjs/components/prism-python';
 
 type Props = {
     disabled: boolean;
@@ -18,11 +22,12 @@ export default function CodeEditor({ disabled }: Props) {
     } = useData();
 
     return (
-        <div className="relative">
+        <div className="relative w-full">
             <Editor
+                className="w-full"
                 value={code}
                 onValueChange={(c) => setCode(c)}
-                highlight={(c) => highlight(c, languages.cpp)}
+                highlight={(c) => highlight(c, language === "py" ? languages.python : languages.clike)}
                 padding={10}
                 style={{
                     fontFamily: '"Fira code", "Fira Mono", monospace',

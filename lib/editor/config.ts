@@ -1,5 +1,5 @@
 import {
-    keymap, highlightSpecialChars, drawSelection, highlightActiveLine, dropCursor,
+    keymap, highlightSpecialChars, drawSelection, dropCursor,
     rectangularSelection, crosshairCursor,
     lineNumbers, highlightActiveLineGutter,
 } from "@codemirror/view";

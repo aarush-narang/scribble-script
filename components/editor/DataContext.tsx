@@ -18,7 +18,7 @@ interface ImageContextProps {
     isExtracted: boolean;
     setIsExtracted: (extracted: boolean) => void;
     compilationResult: CompilationResult | null;
-    setCompilationResult: (result: CompilationResult) => void;
+    setCompilationResult: (result: CompilationResult | null) => void;
 }
 
 const ImageContext = createContext<ImageContextProps | null>(null);

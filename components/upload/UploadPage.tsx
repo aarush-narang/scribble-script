@@ -3,10 +3,7 @@
 import { useRef, useState, JSX } from 'react';
 import Image from 'next/image';
 import {
-    Text, SimpleGrid, Button,
-    useMantineColorScheme,
-    useMantineTheme,
-    Group,
+    Button,
 } from '@mantine/core';
 import { Dropzone, FileWithPath, MIME_TYPES } from '@mantine/dropzone';
 import { useData } from '../editor/DataContext';
@@ -31,8 +28,16 @@ type Props = {
 
 function UploadPage({ disabled }: Props) {
     const {
-        base64Image, setBase64Image, setCode, setIsExtracted,
+        base64Image, setBase64Image, setCode, setIsExtracted, setCompilationResult, setCorrectedCode, setLanguage,
     } = useData();
+
+    const resetAllFields = () => {
+        setCode(""); // Reset the code
+        setIsExtracted(false); // Reset the extracted state
+        setCompilationResult(null); // Reset the compilation result
+        setCorrectedCode(""); // Reset the corrected code
+        setLanguage(""); // Reset the language
+    };
 
     const openRef = useRef<() => void>(null);
     const [files, setFiles] = useState<FileWithPath[]>([]);
@@ -43,8 +48,7 @@ function UploadPage({ disabled }: Props) {
 
     const handleDrop = (acceptedFiles: FileWithPath[]) => {
         setFiles(acceptedFiles);
-        setCode(""); // Reset the code
-        setIsExtracted(false); // Reset the extracted state
+        resetAllFields();
 
         // Create previews and base64 conversions, I only care abt the first file for now
         if (acceptedFiles) {
@@ -77,7 +81,6 @@ function UploadPage({ disabled }: Props) {
                     ]);
                 };
                 reader.readAsDataURL(file); // Convert to base64
-                console.log("Done converting: ", new Date());
             }
         }
     };
@@ -89,12 +92,13 @@ function UploadPage({ disabled }: Props) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ image: base64Image, dev_env: true }),
+            body: JSON.stringify({
+                image: base64Image,
+                // dev_env: true,
+            }),
         })
             .then((res) => res.json())
             .then((data) => {
-                // console.log("End img process: ", new Date());
-                console.log("Response from server:", data);
                 setCode(data.result);
                 setExtracting(false);
             })
@@ -137,7 +141,7 @@ function UploadPage({ disabled }: Props) {
                 )}
             </Dropzone>
 
-            <Group className="flex flex-row mt-4 w-full" style={{ gap: 8 }}>
+            <div className="grid grid-cols-2 mt-2" style={{ gap: 8 }}>
                 <Button
                     className="grow"
                     onClick={() => openRef.current?.()}
@@ -146,16 +150,19 @@ function UploadPage({ disabled }: Props) {
                     Select File
                 </Button>
                 <Button
+                    color="teal"
                     className="grow"
                     disabled={files.length === 0 || disabled}
                     onClick={() => {
+                        resetAllFields();
+
                         extractText();
                     }}
                     loading={extracting}
                 >
                     Extract Text
                 </Button>
-            </Group>
+            </div>
 
         </div>
     );

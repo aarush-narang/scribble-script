@@ -5,7 +5,7 @@ import Anthropic from '@anthropic-ai/sdk';
 
 const anthropic = new Anthropic();
 
-export async function correctCode(code: string): Promise<string> {
+export async function correctCode(code: string, language?: "py" | "cpp"): Promise<string> {
     const prompt = `
 		Given the following code snippet, please correct any syntax errors and add formatting to it (e.g. newlines, tabs, etc.):
 		For example, let's say the input code is:
@@ -26,8 +26,15 @@ export async function correctCode(code: string): Promise<string> {
 
 		Where the code is correctly formatted with proper indentation (missing tab "\t" characters) and syntax (missing curly brace at the end).
 
-		Do not change the code logic, only correct syntax errors and add formatting. You can add things like newlines, tabs, spaces, etc. to make the code more readable.
-
+		Do not change the code logic, only correct syntax errors and add formatting. 
+		You can add things like newlines, tabs, spaces, etc. to make the code more readable.
+		Additionally, please add any missing headers or imports that are required for the code to compile successfully.
+		
+		The language of the code is set by the user to be ${language === "py" ? "Python" : "C++"}. 
+		**IF THE CODE AND THE LANGUAGE DO NOT MATCH, INFER THE LANGUAGE.** 
+		Otherwise, use the language provided by the user.
+		
+		
 		Here is the code snippet to correct:
 		${code}
 

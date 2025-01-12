@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import ReactDiffViewer from 'react-diff-viewer';
 
@@ -19,7 +21,7 @@ export function DiffView({ oldCode, newCode }: DiffViewProps) {
     // `;
 
     return (
-        <div>
+        <div className="w-full">
             <ReactDiffViewer
                 oldValue={oldCode}
                 newValue={newCode}
