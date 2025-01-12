@@ -1,5 +1,6 @@
 import "./globals.css";
 import '@mantine/core/styles.css';
+import '@mantine/dropzone/styles.css';
 import {
     ColorSchemeScript, mantineHtmlProps,
 } from '@mantine/core';
@@ -9,7 +10,8 @@ import { ReactNode } from "react";
 import { FontRounded } from "@/lib/fonts";
 import { AppProvider } from "@/components/providers/AppProvider";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { ImageProvider } from "@/components/editor/ImageContext";
+import { DataProvider } from "@/components/editor/DataContext";
+import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
     title: "Scribble Script",
@@ -29,11 +31,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 }
             </head>
             <body className={FontRounded.className}>
-                <ImageProvider>
+                <DataProvider>
                     <AppProvider fontFamily={FontRounded.style.fontFamily}>
+                        <Navbar />
                         {children}
                     </AppProvider>
-                </ImageProvider>
+                </DataProvider>
 
             </body>
         </html>

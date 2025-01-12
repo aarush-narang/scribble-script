@@ -1,0 +1,51 @@
+// components/CodeMirrorEditor.js
+import Editor from "react-simple-code-editor";
+// @ts-expect-error types not up to date
+import { highlight, languages } from 'prismjs/components/prism-core';
+import { Select } from "@mantine/core";
+import { useData } from "./DataContext";
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-cpp';
+import 'prismjs/themes/prism.css'; // Example style, you can use another
+
+type Props = {
+    disabled: boolean;
+}
+
+export default function CodeEditor({ disabled }: Props) {
+    const {
+        code, setCode, language, setLanguage,
+    } = useData();
+
+    return (
+        <div className="relative">
+            <Editor
+                value={code}
+                onValueChange={(c) => setCode(c)}
+                highlight={(c) => highlight(c, languages.cpp)}
+                padding={10}
+                style={{
+                    fontFamily: '"Fira code", "Fira Mono", monospace',
+                    fontSize: 18,
+                    border: '1px solid #d1d5db',
+                    borderRadius: 5,
+                }}
+                textareaClassName="outline-none"
+                disabled={disabled}
+            />
+            <Select
+                className="absolute top-2 right-2 max-w-fit"
+                data={[
+                    { value: "cpp", label: "C++" },
+                    { value: "py", label: "Python" },
+                ]}
+                allowDeselect={false}
+                placeholder="Select language"
+                value={language}
+                withCheckIcon={false}
+                onChange={(value) => setLanguage(value)}
+                disabled={disabled}
+            />
+        </div>
+    );
+}
