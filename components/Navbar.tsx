@@ -20,7 +20,7 @@ export function Navbar() {
                 <Group className="flex items-center">
                     <Link href="/" className="underline">ScribbleScript</Link>
                     <Link
-                        href="https://github.com/aarush-narang/ScribbleScript"
+                        href="https://github.com/aarush-narang/scribble-script"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="underline"
