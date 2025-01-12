@@ -37,17 +37,12 @@ const updateNotification = ({
         autoClose: closeDelay || !loading,
         withCloseButton: closeable || !loading,
         loading: loading || false,
-        styles: (theme) => ({
-            root: {
-                backgroundColor: theme.colors[color as string][2],
-                borderColor: theme.colors[color as string][7],
-            },
+        styles: () => ({
             title: {
-                color: theme.colors[color as string][9],
                 fontSize: 17,
                 fontWeight: 700,
             },
-            description: { color: theme.colors[color as string][9], fontSize: 15 },
+            description: { fontSize: 15 },
             icon: {
                 marginLeft: 5,
                 padding: 4,
@@ -56,12 +51,6 @@ const updateNotification = ({
             },
             loader: {
                 marginLeft: 5,
-            },
-            closeButton: {
-                "&:hover": {
-                    backgroundColor: theme.colors[color as string][4],
-                },
-                color: theme.colors[color as string][9],
             },
         }),
     });
@@ -108,17 +97,12 @@ export const showErrorNotification = ({
         autoClose: closeDelay || !loading,
         withCloseButton: closeable || !loading,
         loading: loading || false,
-        styles: (theme) => ({
-            root: {
-                backgroundColor: theme.colors.red[2],
-                borderColor: theme.colors.red[7],
-            },
+        styles: () => ({
             title: {
-                color: theme.colors.red[9],
                 fontSize: 17,
                 fontWeight: 700,
             },
-            description: { color: theme.colors.red[9], fontSize: 15 },
+            description: { fontSize: 15 },
             icon: {
                 marginLeft: 5,
                 padding: 4,
@@ -127,12 +111,6 @@ export const showErrorNotification = ({
             },
             loader: {
                 marginLeft: 5,
-            },
-            closeButton: {
-                "&:hover": {
-                    backgroundColor: theme.colors.red[4],
-                },
-                color: theme.colors.red[9],
             },
         }),
     });
@@ -192,17 +170,12 @@ export const showInfoNotification = ({
         autoClose: closeDelay || !loading,
         withCloseButton: closeable || !loading,
         loading: loading || false,
-        styles: (theme) => ({
-            root: {
-                backgroundColor: theme.colors.blue[2],
-                borderColor: theme.colors.blue[7],
-            },
+        styles: () => ({
             title: {
-                color: theme.colors.blue[9],
                 fontSize: 17,
                 fontWeight: 700,
             },
-            description: { color: theme.colors.blue[9], fontSize: 15 },
+            description: { fontSize: 15 },
             icon: {
                 marginLeft: 5,
                 padding: 4,
@@ -211,12 +184,6 @@ export const showInfoNotification = ({
             },
             loader: {
                 marginLeft: 5,
-            },
-            closeButton: {
-                "&:hover": {
-                    backgroundColor: theme.colors.blue[4],
-                },
-                color: theme.colors.blue[9],
             },
         }),
     });
@@ -276,17 +243,12 @@ export const showSuccessNotification = ({
         autoClose: closeDelay || !loading,
         withCloseButton: closeable || !loading,
         loading: loading || false,
-        styles: (theme) => ({
-            root: {
-                backgroundColor: theme.colors.green[2],
-                borderColor: theme.colors.green[7],
-            },
+        styles: () => ({
             title: {
-                color: theme.colors.green[9],
                 fontSize: 17,
                 fontWeight: 700,
             },
-            description: { color: theme.colors.green[9], fontSize: 15 },
+            description: { fontSize: 15 },
             icon: {
                 marginLeft: 5,
                 padding: 4,
@@ -295,12 +257,6 @@ export const showSuccessNotification = ({
             },
             loader: {
                 marginLeft: 5,
-            },
-            closeButton: {
-                "&:hover": {
-                    backgroundColor: theme.colors.green[4],
-                },
-                color: theme.colors.green[9],
             },
         }),
     });
@@ -360,17 +316,12 @@ export const showWarningNotification = ({
         autoClose: closeDelay || !loading,
         withCloseButton: closeable || !loading,
         loading: loading || false,
-        styles: (theme) => ({
-            root: {
-                backgroundColor: theme.colors.yellow[2],
-                borderColor: theme.colors.yellow[7],
-            },
+        styles: () => ({
             title: {
-                color: theme.colors.yellow[9],
                 fontSize: 17,
                 fontWeight: 700,
             },
-            description: { color: theme.colors.yellow[9], fontSize: 15 },
+            description: { fontSize: 15 },
             icon: {
                 marginLeft: 5,
                 padding: 4,
@@ -379,12 +330,6 @@ export const showWarningNotification = ({
             },
             loader: {
                 marginLeft: 5,
-            },
-            closeButton: {
-                "&:hover": {
-                    backgroundColor: theme.colors.yellow[4],
-                },
-                color: theme.colors.yellow[9],
             },
         }),
     });

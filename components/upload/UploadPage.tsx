@@ -6,6 +6,7 @@ import {
     Button,
 } from '@mantine/core';
 import { Dropzone, FileWithPath, MIME_TYPES } from '@mantine/dropzone';
+import { showErrorNotification, showInfoNotification } from '@/lib/notifications/notifications';
 import { useData } from '../editor/DataContext';
 
 interface FilePreview {
@@ -99,6 +100,13 @@ function UploadPage({ disabled }: Props) {
         })
             .then((res) => res.json())
             .then((data) => {
+                if (data.error) {
+                    showErrorNotification({
+                        title: "Error",
+                        message: data.error,
+                        closeDelay: 5000,
+                    });
+                }
                 setCode(data.result);
                 setExtracting(false);
             })
