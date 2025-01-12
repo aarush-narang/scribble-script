@@ -6,13 +6,14 @@ import {
 import UploadPage from "@/components/upload/UploadPage";
 import { useState, useEffect } from "react";
 import CodeEditor from "@/components/editor/CodeEditor";
-import { useData } from "@/components/editor/DataContext";
+import { useData } from "@/components/providers/DataProvider";
 import ColorSwap from "@/components/ColorSwap";
 import Output from "@/components/output/Output";
 import { CompilationResult } from "@/lib/types";
 import { correctCode } from "@/lib/anthropic/api";
 import { DiffView } from "@/components/editor/DiffView";
 import { useScrollIntoView } from "@mantine/hooks";
+import { FLASK_SERVER_URL } from "@/lib/constants";
 
 export default function Home() {
     const {
@@ -27,6 +28,7 @@ export default function Home() {
         setCorrectedCode,
         codeInputText,
         setCodeInputText,
+        isServerAlive,
     } = useData();
 
     const [inputFile, setInputFile] = useState<File | null>(null);
@@ -92,7 +94,7 @@ export default function Home() {
     const handleCompile = async () => {
         setCompiling(true);
 
-        return fetch("https://server.scribblescript.tech/compile", {
+        return fetch(`${FLASK_SERVER_URL}/compile`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -123,12 +125,12 @@ export default function Home() {
         <section className="flex w-full items-center justify-center mt-4 mb-10">
             <div className="flex flex-col w-full max-w-7xl mx-10 gap-6">
                 <div className="shadow-md rounded-lg p-8">
-                    <UploadPage disabled={compiling || correcting || correctedCode !== ""} />
+                    <UploadPage disabled={compiling || correcting || correctedCode !== "" || !isServerAlive} />
                 </div>
                 {isExtracted && (
                     <div className="flex flex-col" ref={codeEditorRef}>
                         <Group gap={8}>
-                            <CodeEditor disabled={compiling || correcting || correctedCode !== ""} />
+                            <CodeEditor disabled={compiling || correcting || correctedCode !== "" || !isServerAlive} />
                             <Tooltip label="If your program requires input from the standard input, you can upload a file containing the input here" position="top">
                                 <FileInput
                                     accept=".txt"
@@ -140,7 +142,7 @@ export default function Home() {
                                         // clear output
                                         setCompilationResult(null);
                                     }}
-                                    disabled={compiling || correcting || correctedCode !== "" || !code}
+                                    disabled={compiling || correcting || correctedCode !== "" || !code || !isServerAlive}
                                     size="md"
                                 />
                             </Tooltip>
@@ -152,7 +154,7 @@ export default function Home() {
                                     color="violet"
                                     className="w-full"
                                     onClick={handleClaude}
-                                    disabled={!language || !code || compiling || correcting || correctedCode !== ""}
+                                    disabled={!language || !code || compiling || correcting || correctedCode !== "" || !isServerAlive}
                                     loading={correcting}
                                 >
                                     Correct With Claude
@@ -163,7 +165,7 @@ export default function Home() {
                                     className="w-full"
                                     onClick={handleCompile}
                                     loading={compiling}
-                                    disabled={!language || correcting || correctedCode !== ""}
+                                    disabled={!language || correcting || correctedCode !== "" || !isServerAlive}
                                 >
                                     Compile
                                     {" "}

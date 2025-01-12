@@ -1,4 +1,5 @@
 export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+export const FLASK_SERVER_URL = "https://server.scribblescript.tech";
 
 export const HEX_OPACITY_POSTFIX = {
     100: "FF",

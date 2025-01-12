@@ -7,7 +7,8 @@ import {
 } from '@mantine/core';
 import { Dropzone, FileWithPath, MIME_TYPES } from '@mantine/dropzone';
 import { showErrorNotification, showInfoNotification } from '@/lib/notifications/notifications';
-import { useData } from '../editor/DataContext';
+import { FLASK_SERVER_URL } from '@/lib/constants';
+import { useData } from '../providers/DataProvider';
 
 interface FilePreview {
     key: string;
@@ -88,7 +89,7 @@ function UploadPage({ disabled }: Props) {
 
     const extractText = () => {
         setExtracting(true);
-        fetch("https://server.scribblescript.tech/process", {
+        fetch(`${FLASK_SERVER_URL}/process`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

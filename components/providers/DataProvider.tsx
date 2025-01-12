@@ -1,12 +1,16 @@
 'use client';
 
+import { FLASK_SERVER_URL } from '@/lib/constants';
+import { showErrorNotification } from '@/lib/notifications/notifications';
 import { CompilationResult } from '@/lib/types';
 import {
     createContext, useContext, useState, ReactNode,
     useMemo,
+    useEffect,
 } from 'react';
 
 interface ImageContextProps {
+    isServerAlive: boolean;
     base64Image: string;
     setBase64Image: (image: string) => void;
     code: string;
@@ -34,7 +38,34 @@ export function DataProvider({ children }: { children: ReactNode }) {
     const [compilationResult, setCompilationResult] = useState<CompilationResult | null>(null);
     const [language, setLanguage] = useState<string | null>('');
 
+    const [isServerAlive, setIsServerAlive] = useState<boolean>(false);
+
+    // ping the server to check if it is alive
+    useEffect(() => {
+        fetch(`${FLASK_SERVER_URL}/ping`, {
+            signal: AbortSignal.timeout(5000),
+        })
+            .then((res) => {
+                if (res.ok) {
+                    setIsServerAlive(true);
+                } else {
+                    showErrorNotification({
+                        title: 'Server Error',
+                        message: 'Server is not responding. Please try again later.',
+                    });
+                }
+            })
+            .catch(() => {
+                showErrorNotification({
+                    title: 'Server Error',
+                    message: 'Our image processing server is not responding. Please try again later.',
+                });
+                setIsServerAlive(false);
+            });
+    }, []);
+
     const value = useMemo(() => ({
+        isServerAlive,
         base64Image,
         setBase64Image,
         code,
@@ -50,6 +81,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         compilationResult,
         setCompilationResult,
     }), [
+        isServerAlive,
         base64Image,
         setBase64Image,
         code,

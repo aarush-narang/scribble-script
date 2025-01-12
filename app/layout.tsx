@@ -12,7 +12,7 @@ import { ReactNode } from "react";
 import { FontRounded } from "@/lib/fonts";
 import { AppProvider } from "@/components/providers/AppProvider";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { DataProvider } from "@/components/editor/DataContext";
+import { DataProvider } from "@/components/providers/DataProvider";
 import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {

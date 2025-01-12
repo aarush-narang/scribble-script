@@ -7,7 +7,7 @@ import { highlight, languages } from 'prismjs/components/prism-core';
 import 'prismjs/themes/prism-tomorrow.css';
 
 import { Select } from "@mantine/core";
-import { useData } from "./DataContext";
+import { useData } from "../providers/DataProvider";
 
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-python';
