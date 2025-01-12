@@ -1,7 +1,7 @@
 'use client';
 
 import {
-    Button, FileInput, Group, Tooltip, useMantineColorScheme,
+    Button, FileInput, Group, Tooltip,
 } from "@mantine/core";
 import UploadPage from "@/components/upload/UploadPage";
 import { useState, useEffect } from "react";
@@ -12,6 +12,7 @@ import Output from "@/components/output/Output";
 import { CompilationResult } from "@/lib/types";
 import { correctCode } from "@/lib/anthropic/api";
 import { DiffView } from "@/components/editor/DiffView";
+import { useScrollIntoView } from "@mantine/hooks";
 
 export default function Home() {
     const {
@@ -33,6 +34,37 @@ export default function Home() {
     const [showAnthropic, setShowAnthropic] = useState<boolean>(false);
     const [compiling, setCompiling] = useState<boolean>(false);
     const [correcting, setCorrecting] = useState<boolean>(false);
+
+    // scrolling to the correct section
+    const { scrollIntoView: scrollToCodeEditor, targetRef: codeEditorRef } = useScrollIntoView<HTMLDivElement>({
+        offset: 60,
+    });
+
+    const { scrollIntoView: scrollToCodeDiff, targetRef: codeDiffRef } = useScrollIntoView<HTMLDivElement>({
+        offset: 60,
+    });
+
+    const { scrollIntoView: scrollToCodeOutput, targetRef: codeOutputRef } = useScrollIntoView<HTMLDivElement>({
+        offset: 60,
+    });
+
+    useEffect(() => {
+        if (isExtracted) {
+            scrollToCodeEditor();
+        }
+    }, [isExtracted]);
+
+    useEffect(() => {
+        if (showAnthropic) {
+            scrollToCodeDiff();
+        }
+    }, [showAnthropic]);
+
+    useEffect(() => {
+        if (compilationResult) {
+            scrollToCodeOutput();
+        }
+    }, [compilationResult]);
 
     useEffect(() => {
         if (code && !isExtracted) {
@@ -94,7 +126,7 @@ export default function Home() {
                     <UploadPage disabled={compiling || correcting || correctedCode !== ""} />
                 </div>
                 {isExtracted && (
-                    <div className="flex flex-col">
+                    <div className="flex flex-col" ref={codeEditorRef}>
                         <Group gap={8}>
                             <CodeEditor disabled={compiling || correcting || correctedCode !== ""} />
                             <Tooltip label="If your program requires input from the standard input, you can upload a file containing the input here" position="top">
@@ -103,7 +135,11 @@ export default function Home() {
                                     className="w-full"
                                     placeholder="Upload an input file (optional)"
                                     value={inputFile}
-                                    onChange={(file) => setInputFile(file)}
+                                    onChange={(file) => {
+                                        setInputFile(file);
+                                        // clear output
+                                        setCompilationResult(null);
+                                    }}
                                     disabled={compiling || correcting || correctedCode !== "" || !code}
                                     size="md"
                                 />
@@ -139,7 +175,7 @@ export default function Home() {
                 )}
 
                 {showAnthropic && (
-                    <div className="flex flex-col">
+                    <div className="flex flex-col" ref={codeDiffRef}>
                         <DiffView oldCode={code} newCode={correctedCode} />
                         <div className="grid grid-cols-2 mt-2" style={{ gap: 8 }}>
                             <Button
@@ -168,7 +204,7 @@ export default function Home() {
                 )}
 
                 {compilationResult && (
-                    <div className="flex flex-col">
+                    <div className="flex flex-col" ref={codeOutputRef}>
                         <Output compilationResult={compilationResult} />
                     </div>
                 )}

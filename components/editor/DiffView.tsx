@@ -1,5 +1,6 @@
 'use client';
 
+import { useMantineColorScheme } from '@mantine/core';
 import React from 'react';
 import ReactDiffViewer from 'react-diff-viewer';
 
@@ -11,14 +12,7 @@ interface DiffViewProps {
 }
 
 export function DiffView({ oldCode, newCode }: DiffViewProps) {
-    // const oldCode = `
-    //     cout << "hi" << endl;
-    //     cout << "hirrr" << endl;
-    // `;
-    // const newCode = `
-    //     cout << "hi" << endl;
-    //     cout << "hello" << endl;
-    // `;
+    const scheme = useMantineColorScheme();
 
     return (
         <div className="w-full">
@@ -26,6 +20,7 @@ export function DiffView({ oldCode, newCode }: DiffViewProps) {
                 oldValue={oldCode}
                 newValue={newCode}
                 splitView
+                useDarkTheme={scheme.colorScheme === 'dark'}
             />
         </div>
     );
