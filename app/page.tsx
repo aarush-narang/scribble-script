@@ -4,7 +4,7 @@ import { Button, useMantineColorScheme } from "@mantine/core";
 import { useState } from "react";
 import CodeMirrorEditor from "@/components/editor/CodeMirrorEditor";
 import { useImage } from "@/components/editor/ImageContext";
-import UploadPage from "./upload/page";
+import UploadPage from "../components/upload/UploadPage";
 
 export default function Home() {
     const colorScheme = useMantineColorScheme();
@@ -15,13 +15,11 @@ export default function Home() {
 
     return (
         <div className="ml-4">
-            <h1>Home</h1>
             <Button onClick={() => colorScheme.toggleColorScheme()}>swap</Button>
             <UploadPage setExtract={setExtract} setBase64Image={setBase64Image} />
 
             {extract && (
                 <div>
-                    <h1>My CodeMirror Editor</h1>
                     <CodeMirrorEditor base64Image={base64Image} onChange={setInitialCode} />
                 </div>
             )}
