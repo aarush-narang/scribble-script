@@ -24,7 +24,7 @@
     "@tabler/icons-react": "^3.28.1",
     "dayjs": "^1.11.13",
     "eslint-plugin-react": "^7.37.2",
-    "next": "15.1.11",
+    "next": "15.4.10",
     "postcss-preset-mantine": "^1.17.0",
     "postcss-simple-vars": "^7.0.1",
     "prismjs": "^1.29.0",
